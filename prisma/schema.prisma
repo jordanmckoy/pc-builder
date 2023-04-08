@@ -1,0 +1,212 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Example {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId], map: "Account_userId_fkey")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "Session_userId_fkey")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  Build         Build[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model CPU {
+  id                Int     @id @default(autoincrement())
+  brand             String
+  model             String
+  socket            String
+  cores             Int
+  base_clock_speed  Float
+  boost_clock_speed Float
+  price             Float
+  stock             Int
+  Build             Build[]
+}
+
+model Cooler {
+  id               Int     @id @default(autoincrement())
+  brand            String
+  model            String
+  fan_size         String
+  noise_level      Float
+  cooling_capacity Float
+  price            Float
+  stock            Int
+  Build            Build[]
+}
+
+model RAM {
+  id       Int     @id @default(autoincrement())
+  brand    String
+  model    String
+  speed    Int
+  capacity Int
+  latency  String
+  price    Float
+  stock    Int
+  Build    Build[]
+}
+
+model Motherboard {
+  id          Int     @id @default(autoincrement())
+  brand       String
+  model       String
+  socket      String
+  chipset     String
+  form_factor String
+  price       Float
+  stock       Int
+  Build       Build[]
+}
+
+model GPU {
+  id                Int     @id @default(autoincrement())
+  brand             String
+  model             String
+  memory_capacity   Int
+  core_clock_speed  Float
+  boost_clock_speed Float
+  price             Float
+  stock             Int
+  Build             Build[]
+}
+
+model PSU {
+  id                Int     @id @default(autoincrement())
+  brand             String
+  model             String
+  wattage           Int
+  efficiency_rating String
+  modular           Boolean
+  price             Float
+  stock             Int
+  Build             Build[]
+}
+
+model Case {
+  id               Int     @id @default(autoincrement())
+  brand            String
+  model            String
+  form_factor      String
+  fan_support      String
+  radiator_support String
+  price            Float
+  stock            Int
+  Build            Build[]
+}
+
+model Storage {
+  id          Int     @id @default(autoincrement())
+  brand       String
+  model       String
+  capacity    Int
+  type        String
+  form_factor String
+  interface   String
+  read_speed  Int
+  write_speed Int
+  price       Float
+  stock       Int
+  Build       Build[]
+}
+
+model PreBuilt {
+  id          Int     @id @default(autoincrement())
+  brand       String
+  model       String
+  cpu         String
+  cooler      String
+  ram         String
+  motherboard String
+  gpu         String
+  psu         String
+  case        String
+  price       Float
+  stock       Int
+  Build       Build[]
+}
+
+model Build {
+  id             Int         @id @default(autoincrement())
+  user_id        Int
+  cpu_id         Int
+  cooler_id      Int
+  ram_id         Int
+  motherboard_id Int
+  gpu_id         Int
+  psu_id         Int
+  case_id        Int
+  storage_id     Int
+  Case           Case        @relation(fields: [case_id], references: [id])
+  Cooler         Cooler      @relation(fields: [cooler_id], references: [id])
+  CPU            CPU         @relation(fields: [cpu_id], references: [id])
+  GPU            GPU         @relation(fields: [gpu_id], references: [id])
+  Motherboard    Motherboard @relation(fields: [motherboard_id], references: [id])
+  PSU            PSU         @relation(fields: [psu_id], references: [id])
+  RAM            RAM         @relation(fields: [ram_id], references: [id])
+  Storage        Storage     @relation(fields: [storage_id], references: [id])
+  User           User?       @relation(fields: [userId], references: [id])
+  userId         String?
+  PreBuilt       PreBuilt?   @relation(fields: [preBuiltId], references: [id])
+  preBuiltId     Int?
+
+  @@index([case_id], map: "Build_case_id_fkey")
+  @@index([cooler_id], map: "Build_cooler_id_fkey")
+  @@index([cpu_id], map: "Build_cpu_id_fkey")
+  @@index([gpu_id], map: "Build_gpu_id_fkey")
+  @@index([motherboard_id], map: "Build_motherboard_id_fkey")
+  @@index([psu_id], map: "Build_psu_id_fkey")
+  @@index([ram_id], map: "Build_ram_id_fkey")
+    @@index([storage_id], map: "Build_storage_id_fkey")
+}
