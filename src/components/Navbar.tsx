@@ -3,8 +3,8 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 const navigation = [
-    { name: 'Prebuilts', href: '#', current: false },
-    { name: 'PcBuilder', href: '#', current: false },
+    { name: 'Prebuilts', href: '/prebuilts', current: false },
+    { name: 'PcBuilder', href: '/builder', current: false },
 ]
 
 function classNames(...classes: string[]) {
