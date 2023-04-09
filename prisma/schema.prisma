@@ -49,8 +49,8 @@ model User {
   emailVerified DateTime?
   image         String?
   accounts      Account[]
-  sessions      Session[]
   Build         Build[]
+  sessions      Session[]
 }
 
 model VerificationToken {
@@ -162,9 +162,8 @@ model Storage {
 }
 
 model PreBuilt {
-  id          Int     @id @default(autoincrement())
-  brand       String
-  model       String
+  id          String     @id @default(uuid())
+  name        String @db.Text
   cpu         String
   cooler      String
   ram         String
@@ -174,7 +173,8 @@ model PreBuilt {
   case        String
   price       Float
   stock       Int
-  Build       Build[]
+  image       String @db.Text
+  description String @db.Text
 }
 
 model Build {
@@ -187,7 +187,9 @@ model Build {
   gpu_id         Int
   psu_id         Int
   case_id        Int
+  preBuiltId     Int?
   storage_id     Int
+  userId         String?
   Case           Case        @relation(fields: [case_id], references: [id])
   Cooler         Cooler      @relation(fields: [cooler_id], references: [id])
   CPU            CPU         @relation(fields: [cpu_id], references: [id])
@@ -197,9 +199,6 @@ model Build {
   RAM            RAM         @relation(fields: [ram_id], references: [id])
   Storage        Storage     @relation(fields: [storage_id], references: [id])
   User           User?       @relation(fields: [userId], references: [id])
-  userId         String?
-  PreBuilt       PreBuilt?   @relation(fields: [preBuiltId], references: [id])
-  preBuiltId     Int?
 
   @@index([case_id], map: "Build_case_id_fkey")
   @@index([cooler_id], map: "Build_cooler_id_fkey")
@@ -208,5 +207,7 @@ model Build {
   @@index([motherboard_id], map: "Build_motherboard_id_fkey")
   @@index([psu_id], map: "Build_psu_id_fkey")
   @@index([ram_id], map: "Build_ram_id_fkey")
-    @@index([storage_id], map: "Build_storage_id_fkey")
+  @@index([storage_id], map: "Build_storage_id_fkey")
+  @@index([preBuiltId], map: "Build_preBuiltId_fkey")
+  @@index([userId], map: "Build_userId_fkey")
 }
