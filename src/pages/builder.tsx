@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { useEffect } from "react";
 import NavBar from "~/components/Navbar";
 
 const features = [
