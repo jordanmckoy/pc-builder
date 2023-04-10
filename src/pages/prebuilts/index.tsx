@@ -4,6 +4,10 @@ import NavBar from "~/components/Navbar"
 import { api } from "~/utils/api"
 import Link from 'next/link'
 
+// Builds
+// https://pcpartpicker.com/b/hjRTwP
+// https://pcpartpicker.com/b/97sXsY
+
 export default function Prebuilts() {
     const { data } = api.prebuilts.getAllBuilds.useQuery()
 

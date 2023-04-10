@@ -7,62 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-  @@index([userId], map: "Account_userId_fkey")
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId], map: "Session_userId_fkey")
-}
-
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  Build         Build[]
-  sessions      Session[]
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
+  id       String  @id @default(cuid())
+  username String? @unique
+  password String?
+  Build    Build[]
 }
 
 model CPU {
-  id                Int     @id @default(autoincrement())
+  id                String  @id @default(uuid())
   brand             String
   model             String
   socket            String
@@ -71,11 +24,13 @@ model CPU {
   boost_clock_speed Float
   price             Float
   stock             Int
+  image             String
+  tdp               Int
   Build             Build[]
 }
 
 model Cooler {
-  id               Int     @id @default(autoincrement())
+  id               String  @id @default(uuid())
   brand            String
   model            String
   fan_size         String
@@ -83,11 +38,12 @@ model Cooler {
   cooling_capacity Float
   price            Float
   stock            Int
+  image            String  @db.Text
   Build            Build[]
 }
 
 model RAM {
-  id       Int     @id @default(autoincrement())
+  id       String  @id @default(uuid())
   brand    String
   model    String
   speed    Int
@@ -95,11 +51,12 @@ model RAM {
   latency  String
   price    Float
   stock    Int
+  image    String  @db.Text
   Build    Build[]
 }
 
 model Motherboard {
-  id          Int     @id @default(autoincrement())
+  id          String  @id @default(uuid())
   brand       String
   model       String
   socket      String
@@ -107,11 +64,12 @@ model Motherboard {
   form_factor String
   price       Float
   stock       Int
+  image       String  @db.Text
   Build       Build[]
 }
 
 model GPU {
-  id                Int     @id @default(autoincrement())
+  id                String  @id @default(uuid())
   brand             String
   model             String
   memory_capacity   Int
@@ -119,11 +77,13 @@ model GPU {
   boost_clock_speed Float
   price             Float
   stock             Int
+  tdp               Int
+  image             String  @db.Text
   Build             Build[]
 }
 
 model PSU {
-  id                Int     @id @default(autoincrement())
+  id                String  @id @default(uuid())
   brand             String
   model             String
   wattage           Int
@@ -131,23 +91,24 @@ model PSU {
   modular           Boolean
   price             Float
   stock             Int
+  image             String  @db.Text
   Build             Build[]
 }
 
 model Case {
-  id               Int     @id @default(autoincrement())
+  id               String  @id @default(uuid())
   brand            String
   model            String
   form_factor      String
-  fan_support      String
-  radiator_support String
+  radiator_support Int
   price            Float
   stock            Int
+  image            String  @db.Text
   Build            Build[]
 }
 
 model Storage {
-  id          Int     @id @default(autoincrement())
+  id          String  @id @default(uuid())
   brand       String
   model       String
   capacity    Int
@@ -158,11 +119,12 @@ model Storage {
   write_speed Int
   price       Float
   stock       Int
+  image       String  @db.Text
   Build       Build[]
 }
 
 model PreBuilt {
-  id          String     @id @default(uuid())
+  id          String @id @default(uuid())
   name        String @db.Text
   cpu         String
   cooler      String
@@ -179,16 +141,15 @@ model PreBuilt {
 
 model Build {
   id             Int         @id @default(autoincrement())
-  user_id        Int
-  cpu_id         Int
-  cooler_id      Int
-  ram_id         Int
-  motherboard_id Int
-  gpu_id         Int
-  psu_id         Int
-  case_id        Int
-  preBuiltId     Int?
-  storage_id     Int
+  user_id        String
+  cpu_id         String
+  cooler_id      String
+  ram_id         String
+  motherboard_id String
+  gpu_id         String
+  psu_id         String
+  case_id        String
+  storage_id     String
   userId         String?
   Case           Case        @relation(fields: [case_id], references: [id])
   Cooler         Cooler      @relation(fields: [cooler_id], references: [id])
@@ -208,6 +169,5 @@ model Build {
   @@index([psu_id], map: "Build_psu_id_fkey")
   @@index([ram_id], map: "Build_ram_id_fkey")
   @@index([storage_id], map: "Build_storage_id_fkey")
-  @@index([preBuiltId], map: "Build_preBuiltId_fkey")
   @@index([userId], map: "Build_userId_fkey")
 }

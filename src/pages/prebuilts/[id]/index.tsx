@@ -69,6 +69,41 @@ export default function Prebuild() {
                                 <div className="space-y-6">
                                     <p className="text-base text-white">{data?.description}</p>
                                 </div>
+
+                                <div className="mt-6 border-t border-gray-200 pt-6">
+                                    <h3 className="sr-only">Details</h3>
+
+                                    <div className="space-y-6">
+                                        <div className="flex justify-between text-base font-medium text-white">
+                                            <p>Processor</p>
+                                            <p>{data?.cpu}</p>
+                                        </div>
+                                        <div className="flex justify-between text-base font-medium text-white">
+                                            <p>Motherboard</p>
+                                            <p>{data?.motherboard}</p>
+                                        </div>
+                                        <div className="flex justify-between text-base font-medium text-white">
+                                            <p>RAM</p>
+                                            <p>{data?.ram}</p>
+                                        </div>
+                                        <div className="flex justify-between text-base font-medium text-white">
+                                            <p>Graphics Card</p>
+                                            <p>{data?.gpu}</p>
+                                        </div>
+                                        {/* <div className="flex justify-between text-base font-medium text-white">
+                                            <p>Storage</p>
+                                            <p>{data?.storage}</p>
+                                        </div> */}
+                                        <div className="flex justify-between text-base font-medium text-white">
+                                            <p>Power Supply</p>
+                                            <p>{data?.psu}</p>
+                                        </div>
+                                        <div className="flex justify-between text-base font-medium text-white">
+                                            <p>Case</p>
+                                            <p>{data?.case}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
