@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Transition, Dialog, RadioGroup } from "@headlessui/react"
 import { XMarkIcon, ShieldCheckIcon, CheckIcon } from "@heroicons/react/24/outline"
@@ -123,9 +124,6 @@ export default function Cpu() {
                                                                                 <RadioGroup.Label as="p" className="text-base font-medium text-gray-900">
                                                                                     {cpu.brand} {cpu.model}
                                                                                 </RadioGroup.Label>
-                                                                                <RadioGroup.Description as="p" className="mt-1 text-sm text-gray-500">
-                                                                                    {cpu.description}
-                                                                                </RadioGroup.Description>
                                                                                 <div
                                                                                     className={classNames(
                                                                                         active ? 'border' : 'border-2',
