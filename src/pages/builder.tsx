@@ -13,7 +13,8 @@ export default function Builder() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavBar />
-      <div className="bg-slate-900 min-h-scree">
+      <div className="bg-slate-900 min-h-screen">
+        <h2 className="text-white font-bold text-2xl px-10 pt-5">Pc Builder</h2>
         <Table />
       </div>
     </>
