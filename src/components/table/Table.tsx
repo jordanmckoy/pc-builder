@@ -2,9 +2,9 @@
 import TableHeader from './TableHeader'
 import { faTags } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { CPU, Case, Cooler, GPU, Motherboard, PSU, RAM, Storage } from '@prisma/client'
-import { Dispatch, SetStateAction, useState } from 'react'
-import { Part } from '~/lib/types'
+import type { CPU, Case, Cooler, GPU, Motherboard, PSU, RAM, Storage } from '@prisma/client'
+import { type Dispatch, type SetStateAction, useState } from 'react'
+import type { Part } from '~/lib/types'
 import { api } from '~/utils/api'
 
 
@@ -21,7 +21,7 @@ export default function Table() {
         psu: Part,
         case: Part,
         cooling: Part,
-    } | {}
+    } | null
 
     const createBlankState = ()=> {
         return {
@@ -238,7 +238,6 @@ export default function Table() {
                                                     <div className="block h-full p-6">
                                                         <select onChange={(e) => {
                                                             if(row.parts) {
-                                                                const part = 
                                                                 handlePartSelection(e.target.value, row.category, row.set as React.Dispatch<React.SetStateAction<Part | undefined>>)
                                                             }
                                                         }} className="p-2 w-full rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400">
