@@ -1,8 +1,8 @@
 export type Part = {
-  id: string | null;
-  brand: string | null;
-  model: string | null;
-  price: number | null;
-  image: string | null;
-  stock: number | null;
-} | null;
+  id: string | null | undefined;
+  brand: string | null | undefined;
+  model: string | null | undefined;
+  price: number | null | undefined;
+  image: string | null | undefined;
+  stock: number | null | undefined;
+};
