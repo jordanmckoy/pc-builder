@@ -5,4 +5,4 @@ export type Part = {
   price: number | null;
   image: string | null;
   stock: number | null;
-}
+} | null;

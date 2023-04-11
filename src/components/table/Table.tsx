@@ -1,14 +1,34 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @next/next/no-img-element */
 import TableHeader from './TableHeader'
 import { faTags } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import type { CPU, Case, Cooler, GPU, Motherboard, PSU, RAM, Storage } from '@prisma/client'
-import { type Dispatch, type SetStateAction, useState } from 'react'
+import { type Dispatch, type SetStateAction, useState, useEffect } from 'react'
 import type { Part } from '~/lib/types'
 import { api } from '~/utils/api'
+import { Transition, Dialog, RadioGroup } from "@headlessui/react"
+import { XMarkIcon, ShieldCheckIcon, CheckIcon } from "@heroicons/react/24/outline"
+import { Fragment } from "react"
 
+function classNames(...classes: string[]) {
+    return classes.filter(Boolean).join(' ')
+}
+
+type Row = {
+    get: Part;
+    set: Dispatch<SetStateAction<Part>>;
+    parts: Part[];
+    category: string;
+}
 
 export default function Table() {
+    useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        import('preline')
+    }, [])
+
 
     const { data } = api.parts.getParts.useQuery()
 
@@ -23,11 +43,11 @@ export default function Table() {
         cooling: Part,
     } | null
 
-    const createBlankState = ()=> {
+    const createBlankState = () => {
         return {
             id: null,
             brand: null,
-            model:null,
+            model: null,
             image: null,
             price: null,
             stock: null,
@@ -52,6 +72,7 @@ export default function Table() {
 
     const [cooling, setCooling] = useState<Part>(createBlankState());
 
+
     // TODO: Implement a feature to save builds to local storage
     const handleBuild = () => {
         const build: Build = {
@@ -68,64 +89,20 @@ export default function Table() {
         console.log(build)
     }
 
-    type Row = {
-        get: Part;
-        set: Dispatch<SetStateAction<Part>>;
-        parts: CPU[] | Motherboard[] | Cooler[] | RAM[] | GPU[] | Storage[] | Case[] | PSU[] | undefined;
-        category: string;
-    }
 
-    const rows : Row[] = [
+
+    if (!data?.cpus || !data?.motherboards || !data?.ram || !data?.gpus || !data?.storage || !data?.psus || !data?.cases || !data?.coolers) return (<div>Loading...</div>)
+
+    const rows: Row[] = [
         { get: cpu, set: setCpu, parts: data?.cpus, category: "CPU" },
-        { get: cooling, set: setCooling, parts: data?.coolers, category: "CPU Cooler"},
-        { get: motherboard, set: setMotherboard, parts: data?.motherboards, category:"Motherboard" },
-        { get: ram, set: setRam, parts: data?.ram, category:"RAM" },
+        { get: cooling, set: setCooling, parts: data?.coolers, category: "CPU Cooler" },
+        { get: motherboard, set: setMotherboard, parts: data?.motherboards, category: "Motherboard" },
+        { get: ram, set: setRam, parts: data?.ram, category: "RAM" },
         { get: gpu, set: setGpu, parts: data?.gpus, category: "GPU" },
-        { get: storage, set: setStorage, parts: data?.storage, category:"Storage" },
-        { get: psu, set: setPsu, parts: data?.psus, category:"Power Supply" },
-        { get: case_, set: setCase, parts: data?.cases, category: "Case"},
+        { get: storage, set: setStorage, parts: data?.storage, category: "Storage" },
+        { get: psu, set: setPsu, parts: data?.psus, category: "Power Supply" },
+        { get: case_, set: setCase, parts: data?.cases, category: "Case" },
     ]
-
-    const handlePartSelection = (id: string, category:string, setPart: React.Dispatch<React.SetStateAction<Part | undefined>>) => {
-        if (id === "blank") {
-            setPart(createBlankState())
-        }
-
-        switch (category) {
-            case "CPU":
-                const cpu = data?.cpus.find(part => (part.id === id))
-                if (cpu) setPart(cpu) 
-                break;
-            case "CPU Cooler":
-                const cooler = data?.coolers.find(part => (part.id === id))
-                if (cooler) setPart(cooler) 
-                break
-            case "Motherboard":
-                const motherboard = data?.motherboards.find(part => (part.id === id))
-                if (motherboard) setPart(motherboard) 
-                break
-            case "RAM":
-                const ram = data?.ram.find(part => (part.id === id))
-                if (ram) setPart(ram) 
-                break
-            case "GPU":
-                const gpu = data?.gpus.find(part => (part.id === id))
-                if (gpu) setPart(gpu) 
-                break
-            case "Storage":
-                const storage = data?.storage.find(part => (part.id === id))
-                if (storage) setPart(storage) 
-                break
-            case "Power Supply":
-                const psu = data?.psus.find(part => (part.id === id))
-                if (psu) setPart(psu) 
-                break
-            case "Case":
-                const case_ = data?.cases.find(part => (part.id === id))
-                if (case_) setPart(case_) 
-                break
-        }
-    }
 
     return (
         <>
@@ -178,7 +155,6 @@ export default function Table() {
                                                     </span>
                                                 </div>
                                             </th>
-                                            <th scope="col" className="px-6 py-3 text-right"></th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -195,11 +171,11 @@ export default function Table() {
                                                     <div className="block h-full p-6" >
                                                         <div className="flex items-center gap-x-4">
                                                             {
-                                                                row.get.image &&
+                                                                row.get?.image &&
                                                                 <img className="flex-shrink-0 h-[2.375rem] w-[2.375rem] rounded-md" src={row.get.image} alt="Image Description" />
                                                             }
                                                             <div>
-                                                                <span className="block text-sm font-semibold whitespace-normal text-gray-800 dark:text-gray-200">{row.get.brand} {row.get.model}</span>
+                                                                <span className="block text-sm font-semibold whitespace-normal text-gray-800 dark:text-gray-200">{row.get?.brand} {row.get?.model}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -211,20 +187,20 @@ export default function Table() {
                                                             <span className="inline-flex items-center justify-center h-10 w-10 rounded-full">
                                                                 <FontAwesomeIcon className='h-5 w-5 text-white' icon={faTags} />
                                                             </span>
-                                                            {row.get.price}
+                                                            {row.get?.price} USD
                                                         </div>
                                                     </div>
 
                                                 </td>
-                                                
+
                                                 <td className="h-px w-px whitespace-nowrap">
                                                     <div className="block h-full p-6" >
-                                                        {row.get.stock && row.get.stock > 0 ?
+                                                        {row.get?.stock && row.get?.stock > 0 ?
                                                             <span className="inline-flex items-center gap-1.5 py-0.5 px-2 rounded-full text-lg font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                                                                 <svg className="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                                                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
                                                                 </svg>
-                                                                {row.get.stock} In Stock
+                                                                {row.get?.stock} In Stock
                                                             </span>
                                                             :
                                                             <span className="inline-flex items-center gap-1.5 py-0.5 px-2 rounded-full text-lg font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
@@ -235,48 +211,7 @@ export default function Table() {
                                                     </div>
                                                 </td>
                                                 <td className="h-px w-px whitespace-nowrap">
-                                                    <div className="block h-full p-6">
-                                                        <select onChange={(e) => {
-                                                            if(row.parts) {
-                                                                handlePartSelection(e.target.value, row.category, row.set as React.Dispatch<React.SetStateAction<Part | undefined>>)
-                                                            }
-                                                        }} className="p-2 w-full rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400">
-                                                            <option value={"blank"}>Choose a Part</option>
-                                                            {row.parts && row.parts.map((part) =>
-                                                                <option value={part.id}>{part.brand} {part.model}</option >
-                                                            )}
-                                                        </select>
-                                                    </div>
-                                                </td>
-                                                <td className="h-px w-px whitespace-nowrap">
-                                                    {row.get.id && (<>
-                                                        <button type="button" className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" data-hs-overlay={"#" + "modal-" + row.get.id}>
-                                                            View
-                                                        </button>
-                                                        <div id={"modal-" + row.get.id} className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto">
-                                                            <div className="flex justify-center hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all h-auto">
-                                                                <div className="flex flex-col bg-white border w-3/6 shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
-                                                                    <div className="flex flex-col justify-center items-center bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
-                                                                        {row.get.image && (
-                                                                            <img className="w-96 h-96" src={row.get.image} alt="Image Description" />
-                                                                        )}
-                                                                        <div className="p-4 md:p-5">
-                                                                            <h3 className="text-lg font-bold text-gray-800 dark:text-white">
-                                                                                {row.get.brand} {row.get.model}
-                                                                            </h3>
-                                                                            <p className="mt-1 text-lg font-bold dark:text-white">
-                                                                                $ {row.get.price}
-                                                                            </p>
-                                                                        </div>
-                                                                        <button type="button" className="hs-dropdown-toggle py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800" data-hs-overlay={"#" + "modal-" + row.get.id}>
-                                                                            Close
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </>
-                                                    )}
+                                                    <ActionButton category={row.category} get={row.get} parts={row.parts} set={row.set} />
                                                 </td>
                                             </tr>
                                         ))}
@@ -304,11 +239,175 @@ export default function Table() {
                                 {/* <!-- End Footer --> */}
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </div >
+                </div >
                 {/* <!-- End Card --> */}
             </div >
             {/* <!-- End Table Section --> */}
         </>
     )
 }
+
+function ActionButton(row: Row) {
+    const [open, setOpen] = useState(false)
+
+    return (
+        <div className="block h-full p-6" >
+            <div className="mt-5">
+                <button onClick={() => setOpen(true)} type="button" className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" data-hs-overlay="#hs-bg-gray-on-hover-cards">
+                    Pick a Part
+                </button>
+            </div>
+            <Transition.Root show={open} as={Fragment}>
+                <Dialog as="div" className="relative z-10" onClose={setOpen}>
+                    <Transition.Child
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                    >
+                        <div className="fixed inset-0 hidden bg-gray-500 bg-opacity-75 transition-opacity md:block" />
+                    </Transition.Child>
+
+                    <div className="fixed inset-0 z-10 overflow-y-auto">
+                        <div className="flex min-h-full items-stretch justify-center text-center md:items-center md:px-2 lg:px-4">
+                            <Transition.Child
+                                as={Fragment}
+                                enter="ease-out duration-300"
+                                enterFrom="opacity-0 translate-y-4 md:translate-y-0 md:scale-95"
+                                enterTo="opacity-100 translate-y-0 md:scale-100"
+                                leave="ease-in duration-200"
+                                leaveFrom="opacity-100 translate-y-0 md:scale-100"
+                                leaveTo="opacity-0 translate-y-4 md:translate-y-0 md:scale-95"
+                            >
+                                <Dialog.Panel className="flex w-full transform text-left text-base transition md:my-8 md:max-w-2xl md:px-4 lg:max-w-4xl">
+                                    <div className="relative flex w-full items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
+                                        <button
+                                            type="button"
+                                            className="absolute right-4 top-4 text-gray-400 hover:text-gray-500 sm:right-6 sm:top-8 md:right-6 md:top-6 lg:right-8 lg:top-8"
+                                            onClick={() => setOpen(false)}
+                                        >
+                                            <span className="sr-only">Close</span>
+                                            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                                        </button>
+
+                                        <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
+                                            <div className="sm:col-span-4 lg:col-span-5">
+                                                <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100">
+                                                    {row.get?.image && (
+                                                        <img src={row.get?.image} className="object-cover object-center" />
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className="sm:col-span-8 lg:col-span-7">
+                                                <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">{row.get?.brand} {row.get?.model}</h2>
+
+                                                <section aria-labelledby="information-heading" className="mt-4">
+                                                    <h3 id="information-heading" className="sr-only">
+                                                        Product information
+                                                    </h3>
+
+                                                    <div className="flex items-center">
+                                                        <p className="text-lg text-gray-900 sm:text-xl">$ {row.get?.price} USD</p>
+                                                    </div>
+
+                                                    {row.get?.stock && (
+                                                        <div className="mt-6 flex items-center">
+                                                            <CheckIcon className="h-5 w-5 flex-shrink-0 text-green-500" aria-hidden="true" />
+                                                            <p className="ml-2 font-medium text-gray-500">In stock and ready to ship</p>
+                                                        </div>
+                                                    )}
+                                                </section>
+
+                                                <section aria-labelledby="options-heading" className="mt-6">
+                                                    <h3 id="options-heading" className="sr-only">
+                                                        Product options
+                                                    </h3>
+                                                    <div className="sm:flex sm:justify-between">
+                                                        {/* Size selector */}
+                                                        <RadioGroup value={row.get?.id}
+                                                            onChange={(e: unknown) => {
+                                                                const data = e as Part
+                                                                if (data && data.id) {
+                                                                    row.set(data)
+                                                                }
+                                                            }}
+                                                        >
+                                                            <RadioGroup.Label className="block text-sm font-medium text-gray-700">
+                                                                {row.category}
+                                                            </RadioGroup.Label>
+                                                            <div className="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                                {row.parts && (
+                                                                    row.parts?.map((data) => (
+                                                                        <RadioGroup.Option
+                                                                            as="div"
+                                                                            key={data?.model}
+                                                                            value={data}
+
+                                                                            className={({ active }) =>
+                                                                                classNames(
+                                                                                    active ? 'ring-2 ring-indigo-500' : '',
+                                                                                    'relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-none'
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            {({ active, checked }) => (
+                                                                                <>
+                                                                                    <RadioGroup.Label as="p" className="text-base font-medium text-gray-900">
+                                                                                        {data?.brand} {data?.model}
+                                                                                    </RadioGroup.Label>
+                                                                                    <div
+                                                                                        className={classNames(
+                                                                                            active ? 'border' : 'border-2',
+                                                                                            checked ? 'border-indigo-500' : 'border-transparent',
+                                                                                            'pointer-events-none absolute -inset-px rounded-lg'
+                                                                                        )}
+                                                                                        aria-hidden="true"
+                                                                                    />
+                                                                                </>
+                                                                            )}
+                                                                        </RadioGroup.Option>
+                                                                    ))
+                                                                )
+                                                                }
+                                                            </div>
+                                                        </RadioGroup>
+                                                    </div>
+
+                                                    <div className="mt-6">
+                                                        <button
+                                                            onClick={() => {
+                                                                setOpen(false)
+                                                            }}
+                                                            className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                                                        >
+                                                            Add to bag
+                                                        </button>
+                                                    </div>
+                                                    <div className="mt-6 text-center">
+                                                        <a href="#" className="group inline-flex text-base font-medium">
+                                                            <ShieldCheckIcon
+                                                                className="mr-2 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                                                                aria-hidden="true"
+                                                            />
+                                                            <span className="text-gray-500 group-hover:text-gray-700">Lifetime Guarantee</span>
+                                                        </a>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Dialog.Panel>
+                            </Transition.Child>
+                        </div>
+                    </div>
+                </Dialog>
+            </Transition.Root >
+        </div>
+    )
+}
+
+
