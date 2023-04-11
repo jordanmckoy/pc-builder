@@ -11,7 +11,7 @@ model User {
   id       String  @id @default(cuid())
   username String? @unique
   password String?
-  Build    Build[]
+  Build    Build?
 }
 
 model CPU {
@@ -140,8 +140,6 @@ model PreBuilt {
 }
 
 model Build {
-  id             Int         @id @default(autoincrement())
-  user_id        String
   cpu_id         String
   cooler_id      String
   ram_id         String
@@ -150,7 +148,8 @@ model Build {
   psu_id         String
   case_id        String
   storage_id     String
-  userId         String?
+  userId         String      @id
+  price          Float
   Case           Case        @relation(fields: [case_id], references: [id])
   Cooler         Cooler      @relation(fields: [cooler_id], references: [id])
   CPU            CPU         @relation(fields: [cpu_id], references: [id])
@@ -159,7 +158,7 @@ model Build {
   PSU            PSU         @relation(fields: [psu_id], references: [id])
   RAM            RAM         @relation(fields: [ram_id], references: [id])
   Storage        Storage     @relation(fields: [storage_id], references: [id])
-  User           User?       @relation(fields: [userId], references: [id])
+  User           User        @relation(fields: [userId], references: [id])
 
   @@index([case_id], map: "Build_case_id_fkey")
   @@index([cooler_id], map: "Build_cooler_id_fkey")

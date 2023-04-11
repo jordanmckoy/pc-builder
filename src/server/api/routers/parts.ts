@@ -14,7 +14,4 @@ export const partRouter = createTRPCRouter({
     };
     return parts;
   }),
-  getCPUs: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.cPU.findMany();
-  }),
 });

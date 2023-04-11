@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -7,8 +8,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { faTags } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { type Dispatch, type SetStateAction, useState, useEffect, useRef, useCallback } from 'react'
-import type { Part } from '~/lib/types'
+import { useState, useEffect, useRef } from 'react'
+import type { Part, CompleteBuildType } from '~/lib/types'
 import { api } from '~/utils/api'
 import { Transition, Dialog, RadioGroup } from "@headlessui/react"
 import { CheckIcon, ExclamationTriangleIcon, ShieldCheckIcon, XMarkIcon } from "@heroicons/react/24/outline"
@@ -16,31 +17,62 @@ import { Fragment } from "react"
 import Spinner from '../Spinner'
 
 type Build = {
-    cpu: Part,
-    motherboard: Part,
-    ram: Part,
-    gpu: Part,
-    storage: Part,
-    psu: Part,
-    case: Part,
-    cooling: Part,
-    totalPrice?: number,
+    cpu: Part | null,
+    motherboard: Part | null,
+    ram: Part | null,
+    gpu: Part | null,
+    storage: Part | null,
+    psu: Part | null,
+    case: Part | null,
+    cooling: Part | null,
+    price?: number | null,
 }
 
-const createBlankState = () => {
-    return {
-        id: null,
-        brand: null,
-        model: null,
-        image: null,
-        price: null,
-        stock: null,
-    };
-};
+// eslint-disable-next-line prefer-const
+let build: Build = {
+    cpu: null,
+    motherboard: null,
+    ram: null,
+    gpu: null,
+    storage: null,
+    psu: null,
+    case: null,
+    cooling: null,
+    price: null,
+}
 
 type Row = {
     parts: Part[];
     category: string;
+}
+
+function handleBuild(category: string, part: Part) {
+    switch (category) {
+        case "CPU":
+            build.cpu = part
+            break;
+        case "CPU Cooler":
+            build.cooling = part
+            break;
+        case "Motherboard":
+            build.motherboard = part
+            break;
+        case "RAM":
+            build.ram = part
+            break;
+        case "GPU":
+            build.gpu = part
+            break;
+        case "Storage":
+            build.storage = part
+            break;
+        case "Power Supply":
+            build.psu = part
+            break;
+        case "Case":
+            build.case = part
+            break;
+    }
 }
 
 function classNames(...classes: string[]) {
@@ -74,7 +106,7 @@ export default function Table() {
     return (
         <>
             {/* <!-- Table Section --> */}
-            <div className="max-w-full px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+            <div className="max-w-full px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto drop-shadow-lg">
                 {/* <!-- Card --> */}
                 <div className="flex flex-col">
                     <div className="-m-1.5 overflow-x-auto">
@@ -134,20 +166,7 @@ export default function Table() {
                                 <div className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-700">
                                     <div>
                                         <div className="inline-flex gap-x-2">
-                                            {/* {cpu && motherboard && ram && cooling && gpu && storage && psu && case_ && (
-                                                <ConfirmModal build={
-                                                    {
-                                                        cpu: cpu,
-                                                        motherboard: motherboard,
-                                                        ram: ram,
-                                                        cooling: cooling,
-                                                        gpu: gpu,
-                                                        storage: storage,
-                                                        psu: psu,
-                                                        case: case_
-                                                    }
-                                                } />
-                                            )} */}
+                                            <ConfirmModal />
                                         </div>
                                     </div>
                                 </div>
@@ -163,20 +182,10 @@ export default function Table() {
     )
 }
 
-type ActionProps = {
-    updateState: (part: Part, setter: Dispatch<SetStateAction<Part>>) => void,
-    row: Row
-}
 
 
-type Props = {
-    build: Build
-}
-
-export function ConfirmModal({ build }: Props) {
+export function ConfirmModal() {
     const [open, setOpen] = useState(false)
-
-    const [total, setTotal] = useState(0)
 
     const cancelButtonRef = useRef(null)
 
@@ -190,7 +199,18 @@ export function ConfirmModal({ build }: Props) {
     const powerSupplyPrice = build?.psu?.price
 
     if (cpuPrice && gpuPrice && ramPrice && coolerPrice && casePrice && storagePrice && motherboardPrice && powerSupplyPrice) {
-        setTotal(cpuPrice + gpuPrice + ramPrice + coolerPrice + casePrice + storagePrice + motherboardPrice + powerSupplyPrice)
+        console.log(cpuPrice + gpuPrice + ramPrice + coolerPrice + casePrice + storagePrice + motherboardPrice + powerSupplyPrice)
+    }
+    const mutation = api.builds.submitBuild.useMutation()
+
+    // @ts-ignore
+    const total = Number((cpuPrice + gpuPrice + ramPrice + coolerPrice + casePrice + storagePrice + motherboardPrice + powerSupplyPrice).toFixed(2))
+
+    build.price = total
+
+    const submitBuild = (data: CompleteBuildType) => {
+
+        mutation.mutate({ parts: data })
     }
 
     return (
@@ -262,7 +282,7 @@ export function ConfirmModal({ build }: Props) {
                                                     </p>
 
                                                     <p className="text-sm text-gray-500">
-                                                        Total Price: {total}
+                                                        Total Price: $ {total} USD
                                                     </p>
                                                 </div>
                                             </div>
@@ -272,9 +292,19 @@ export function ConfirmModal({ build }: Props) {
                                         <button
                                             type="button"
                                             className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                                            onClick={() => setOpen(false)}
+                                            onClick={() => {
+                                                if (build.cpu && build.gpu && build.ram && build.motherboard && build.storage && build.psu && build.case) {
+                                                    // @ts-ignore
+                                                    submitBuild(build)
+                                                }
+                                                else {
+                                                    alert("Please select all parts")
+                                                }
+
+                                                setOpen(false)
+                                            }}
                                         >
-                                            Deactivate
+                                            Purchase
                                         </button>
                                         <button
                                             type="button"
@@ -295,13 +325,15 @@ export function ConfirmModal({ build }: Props) {
     )
 }
 
-
 function TableRow(row: Row) {
     const [open, setOpen] = useState(false)
     const [part, setPart] = useState<Part | null>(null)
 
     function updatePart(data: Part | null) {
         setPart(data)
+        if (data) {
+            handleBuild(row.category, data)
+        }
     }
 
     return (
