@@ -4,23 +4,30 @@ import { z } from "zod";
 import { CompleteBuild } from "~/lib/types";
 
 export const buildRouter = createTRPCRouter({
-  getAllUserBuilds: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.build.findFirst({
-      where: {
-        userId: "asfdweffsaf",
-      },
-    });
-  }),
+  getAllUserBuilds: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.build.findFirst({
+        where: {
+          userId: input.id,
+        },
+      });
+    }),
   submitBuild: publicProcedure
     .input(
       z.object({
         parts: CompleteBuild,
+        id: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const data = await ctx.prisma.build.upsert({
         where: {
-          userId: "asfdweffsaf",
+          userId: input.id,
         },
         create: {
           cpu_id: input.parts.cpu.id,
@@ -32,7 +39,7 @@ export const buildRouter = createTRPCRouter({
           case_id: input.parts.case.id,
           cooler_id: input.parts.cooling.id,
           price: input.parts.price,
-          userId: "asfdweffsaf",
+          userId: input.id,
         },
         update: {
           cpu_id: input.parts.cpu.id,

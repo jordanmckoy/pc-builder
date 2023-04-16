@@ -15,6 +15,7 @@ import { Transition, Dialog, RadioGroup } from "@headlessui/react"
 import { CheckIcon, ExclamationTriangleIcon, ShieldCheckIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { Fragment } from "react"
 import Spinner from '../Spinner'
+import { useSession } from "next-auth/react";
 
 type Build = {
     cpu: Part | null,
@@ -208,9 +209,13 @@ export function ConfirmModal() {
 
     build.price = total
 
+    const { data: sessionData } = useSession();
+
     const submitBuild = (data: CompleteBuildType) => {
 
-        mutation.mutate({ parts: data })
+        if (!sessionData) return
+
+        mutation.mutate({ parts: data, id: sessionData.user.id })
     }
 
     return (
@@ -551,5 +556,3 @@ function TableRow(row: Row) {
         </tr>
     )
 }
-
-

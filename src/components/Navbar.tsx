@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
@@ -5,7 +6,7 @@ import Link from 'next/link'
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { api } from '~/utils/api'
-
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const navigation = [
     { name: 'Prebuilts', href: '/prebuilts', current: false },
@@ -66,7 +67,7 @@ export default function NavBar() {
                                 </div>
                             </div>
                             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                                <Button />
+                                <AuthShowcase />
                             </div>
                         </div>
                     </div>
@@ -99,7 +100,13 @@ export default function NavBar() {
 export function Button() {
     const [open, setOpen] = useState(false)
 
-    const { data } = api.builds.getAllUserBuilds.useQuery()
+    const { data: sessionData } = useSession();
+
+    if (!sessionData) {
+        return null;
+    }
+
+    const { data } = api.builds.getAllUserBuilds.useQuery({ id: sessionData.user.id })
 
     const parts = api.parts.getParts.useQuery()
 
@@ -250,3 +257,24 @@ export function Button() {
         </>
     )
 }
+
+const AuthShowcase: React.FC = () => {
+    const { data: sessionData } = useSession();
+    return (
+        <>
+            <div className='flex gap-5'>
+                {sessionData && (
+                    <Button />
+                )}
+
+                <button
+                    type="button"
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                    onClick={sessionData ? () => void signOut() : () => void signIn('auth0')}
+                >
+                    {sessionData ? "Sign out" : "Sign in"}
+                </button>
+            </div>
+        </>
+    );
+};
