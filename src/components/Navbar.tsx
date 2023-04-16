@@ -7,6 +7,7 @@ import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { api } from '~/utils/api'
 import { signIn, signOut, useSession } from "next-auth/react";
+import SignInModal from './SignInModal'
 
 const navigation = [
     { name: 'Prebuilts', href: '/prebuilts', current: false },
@@ -103,7 +104,7 @@ export function Button() {
     const { data: sessionData } = useSession();
 
     if (!sessionData) {
-        return null;
+        return <SignInModal />;
     }
 
     const { data } = api.builds.getAllUserBuilds.useQuery({ id: sessionData.user.id })
@@ -130,7 +131,7 @@ export function Button() {
         <>
             <button
                 type="button"
-                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                className="mt-3 inline-flex w-full justify-center rounded-md  bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-50 hover:text-gray-500 sm:mt-0 sm:w-auto"
                 onClick={() => setOpen(true)}
             >
                 Build Cart
