@@ -12,6 +12,7 @@ import SignInModal from './SignInModal'
 const navigation = [
     { name: 'Prebuilts', href: '/prebuilts', current: false },
     { name: 'PcBuilder', href: '/builder', current: false },
+    { name: 'About', href: '/about', current: false },
 ]
 
 
