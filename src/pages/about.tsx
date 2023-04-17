@@ -32,12 +32,12 @@ const team = [
     {
         name: 'Jordan McKoy',
         role: 'Co-Founder & CTO',
-        imageUrl: '/assets/team/jordan-mckoy.jpg',
+        imageUrl: '/assets/stock/jordan-mckoy.jpg',
     },
     {
         name: 'Kadeem Green',
         role: 'Co-Founder & CEO',
-        imageUrl: '/assets/team/kadeem-green.jpg',
+        imageUrl: '/assets/stock/kadeem-green.jpg',
     }
 
 ]
