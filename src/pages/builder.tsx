@@ -1,16 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { type GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import NavBar from "~/components/Navbar";
 import SignInModal from "~/components/SignInModal";
 import Table from "~/components/table/Table";
+import { getServerAuthSession } from "~/server/auth";
 
 
 export default function Builder() {
-    const { data: sessionData } = useSession();
-    if (!sessionData) {
-        return <SignInModal />
-    }
+    const { data: session } = useSession()
+
+    if (!session) return <SignInModal />
 
     return (
         <>
@@ -27,3 +27,11 @@ export default function Builder() {
         </>
     );
 }
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+    return {
+        props: {
+            session: await getServerAuthSession(ctx),
+        },
+    };
+};

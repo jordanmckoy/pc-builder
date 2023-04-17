@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @next/next/no-img-element */
 import NavBar from "~/components/Navbar"
 import { api } from "~/utils/api"
 import Link from 'next/link'

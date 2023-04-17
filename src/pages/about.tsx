@@ -1,6 +1,5 @@
 import { type SVGProps } from 'react'
 import NavBar from '~/components/Navbar'
-import Image from 'next/image'
 
 const values = [
     {

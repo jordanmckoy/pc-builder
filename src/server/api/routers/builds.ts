@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import { CompleteBuild } from "~/lib/types";

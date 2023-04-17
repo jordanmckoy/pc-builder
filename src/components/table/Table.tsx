@@ -1,11 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/restrict-plus-operands */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @next/next/no-img-element */
 import { faTags } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState, useEffect, useRef } from 'react'
@@ -29,7 +21,6 @@ type Build = {
     price?: number | null,
 }
 
-// eslint-disable-next-line prefer-const
 let build: Build = {
     cpu: null,
     motherboard: null,
@@ -84,7 +75,6 @@ function classNames(...classes: string[]) {
 export default function Table() {
 
     useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         import('preline')
     }, [])
