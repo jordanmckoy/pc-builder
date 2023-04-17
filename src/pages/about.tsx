@@ -1,51 +1,45 @@
 import { type SVGProps } from 'react'
 import NavBar from '~/components/Navbar'
 
-const stats = [
-    { label: 'Transactions every 24 hours', value: '44 million' },
-    { label: 'Assets under holding', value: '$119 trillion' },
-    { label: 'New users annually', value: '46,000' },
-]
 const values = [
     {
-        name: 'Be world-class',
-        description:
-            'Aut illo quae. Ut et harum ea animi natus. Culpa maiores et sed sint et magnam exercitationem quia. Ullam voluptas nihil vitae dicta molestiae et. Aliquid velit porro vero.',
+        name: "Excellence",
+        description: "We strive to deliver world-class products and services, continuously improving and setting the standard for our industry."
     },
     {
-        name: 'Share everything you know',
-        description:
-            'Mollitia delectus a omnis. Quae velit aliquid. Qui nulla maxime adipisci illo id molestiae. Cumque cum ut minus rerum architecto magnam consequatur. Quia quaerat minima.',
+        name: "Collaboration",
+        description: "We believe in the power of sharing knowledge and ideas, working together to achieve our common goals."
     },
     {
-        name: 'Always learning',
-        description:
-            'Aut repellendus et officiis dolor possimus. Deserunt velit quasi sunt fuga error labore quia ipsum. Commodi autem voluptatem nam. Quos voluptatem totam.',
+        name: "Innovation",
+        description: "We embrace new ideas and technologies, constantly seeking out better ways to solve problems and deliver value to our customers."
     },
     {
-        name: 'Be supportive',
-        description:
-            'Magnam provident veritatis odit. Vitae eligendi repellat non. Eum fugit impedit veritatis ducimus. Non qui aspernatur laudantium modi. Praesentium rerum error deserunt harum.',
+        name: "Integrity",
+        description: "We act with honesty and transparency in all our dealings, building trust and earning the respect of our customers, partners, and colleagues."
     },
     {
-        name: 'Take responsibility',
-        description:
-            'Sit minus expedita quam in ullam molestiae dignissimos in harum. Tenetur dolorem iure. Non nesciunt dolorem veniam necessitatibus laboriosam voluptas perspiciatis error.',
+        name: "Customer Focus",
+        description: "We put our customers at the center of everything we do, striving to exceed their expectations and provide exceptional service and support."
     },
     {
-        name: 'Enjoy downtime',
-        description:
-            'Ipsa in earum deserunt aut. Quos minus aut animi et soluta. Ipsum dicta ut quia eius. Possimus reprehenderit iste aspernatur ut est velit consequatur distinctio.',
-    },
+        name: "Empowerment",
+        description: "We believe in empowering our employees to take ownership and make decisions, fostering a culture of innovation, creativity, and accountability."
+    }
 ]
+
 const team = [
     {
-        name: 'Michael Foster',
-        role: 'Co-Founder / CTO',
-        imageUrl:
-            'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80',
+        name: 'Jordan McKoy',
+        role: 'Co-Founder & CTO',
+        imageUrl: '/assets/team/jordan-mckoy.jpg',
     },
-    // More people...
+    {
+        name: 'Kadeem Green',
+        role: 'Co-Founder & CEO',
+        imageUrl: '/assets/team/kadeem-green.jpg',
+    }
+
 ]
 
 const footerNavigation = {
@@ -144,7 +138,7 @@ export default function About() {
                                 <path d="M.5 200V.5H200" fill="none" />
                             </pattern>
                         </defs>
-                        <svg x="50%" y={-1} className="overflow-visible fill-gray-50">
+                        <svg x="50%" y={-1} className="overflow-visible fill-gray-600">
                             <path
                                 d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z"
                                 strokeWidth={0}
@@ -169,13 +163,13 @@ export default function About() {
                             <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                                 <div className="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
                                     <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-                                        We’re changing the way people connect.
+                                        Experience Gaming Like Never Before with
+                                        <p className='text-blue-500'>GamerzJA!</p>
                                     </h1>
-                                    <p className="relative mt-6 text-lg leading-8 text-gray-300 sm:max-w-md lg:max-w-none">
-                                        Cupidatat minim id magna ipsum sint dolor qui. Sunt sit in quis cupidatat mollit aute velit. Et
-                                        labore commodo nulla aliqua proident mollit ullamco exercitation tempor. Sint aliqua anim nulla sunt
-                                        mollit id pariatur in voluptate cillum. Eu voluptate tempor esse minim amet fugiat veniam occaecat
-                                        aliqua.
+                                    <p className="relative mt-6 text-lg leading-8 text-gray-100 sm:max-w-md lg:max-w-none">
+                                        At GamerzJA, we're passionate about gaming and technology, and we're on a mission to transform the way people experience gaming.
+                                        Our custom-built gaming computers are designed to meet the unique needs and preferences of every individual gamer,
+                                        and our commitment to exceptional customer service sets us apart from the competition.
                                     </p>
                                 </div>
                                 <div className="mt-14 flex justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
@@ -238,33 +232,11 @@ export default function About() {
                         <div className="mt-6 flex flex-col gap-x-8 gap-y-20 lg:flex-row">
                             <div className="lg:w-full lg:max-w-2xl lg:flex-auto">
                                 <p className="text-xl leading-8 text-gray-300">
-                                    Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam
-                                    eget aliquam. Quisque id at vitae feugiat egestas ac. Diam nulla orci at in viverra scelerisque eget.
-                                    Eleifend egestas fringilla sapien.
+                                    Our mission at GamerzJA is to revolutionize the gaming experience by providing high-quality,
+                                    customizable gaming computers and exceptional customer service. We believe that every gamer deserves a computer that is tailored to their unique needs and preferences,
+                                    and we are committed to delivering personalized solutions that exceed their expectations.
+                                    Through our dedication to quality, innovation, and customer satisfaction, we aim to become the leading provider of custom-built gaming computers in the industry.
                                 </p>
-                                <div className="mt-10 max-w-xl text-base leading-7 text-gray-300">
-                                    <p>
-                                        Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed
-                                        amet vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius
-                                        sit neque erat velit. Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim.
-                                        Mattis mauris semper sed amet vitae sed turpis id.
-                                    </p>
-                                    <p className="mt-10">
-                                        Et vitae blandit facilisi magna lacus commodo. Vitae sapien duis odio id et. Id blandit molestie
-                                        auctor fermentum dignissim. Lacus diam tincidunt ac cursus in vel. Mauris varius vulputate et
-                                        ultrices hac adipiscing egestas. Iaculis convallis ac tempor et ut. Ac lorem vel integer orci.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="lg:flex lg:flex-auto lg:justify-center">
-                                <dl className="w-64 space-y-8 xl:w-80">
-                                    {stats.map((stat) => (
-                                        <div key={stat.label} className="flex flex-col-reverse gap-y-4">
-                                            <dt className="text-base leading-7 text-gray-400">{stat.label}</dt>
-                                            <dd className="text-5xl font-semibold tracking-tight text-white">{stat.value}</dd>
-                                        </div>
-                                    ))}
-                                </dl>
                             </div>
                         </div>
                     </div>
@@ -284,8 +256,8 @@ export default function About() {
                     <div className="mx-auto max-w-2xl lg:mx-0">
                         <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Our values</h2>
                         <p className="mt-6 text-lg leading-8 text-gray-300">
-                            Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in
-                            accusamus quisquam.
+                            At GamerzJA, we are guided by our core values that shape our culture and define our identity.
+                            These values are not just words on paper, but they reflect who we are as a team and what we stand for.
                         </p>
                     </div>
                     <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 text-base leading-7 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
@@ -298,80 +270,15 @@ export default function About() {
                     </dl>
                 </div>
 
-                {/* Logo cloud */}
-                <div className="relative isolate -z-10 mt-32 sm:mt-48">
-                    <div className="absolute inset-x-0 top-1/2 -z-10 flex -translate-y-1/2 justify-center overflow-hidden [mask-image:radial-gradient(50%_45%_at_50%_55%,white,transparent)]">
-                        <svg className="h-[40rem] w-[80rem] flex-none stroke-gray-200" aria-hidden="true">
-                            <defs>
-                                <pattern
-                                    id="e9033f3e-f665-41a6-84ef-756f6778e6fe"
-                                    width={200}
-                                    height={200}
-                                    x="50%"
-                                    y="50%"
-                                    patternUnits="userSpaceOnUse"
-                                    patternTransform="translate(-100 0)"
-                                >
-                                    <path d="M.5 200V.5H200" fill="none" />
-                                </pattern>
-                            </defs>
-                            <svg x="50%" y="50%" className="overflow-visible fill-gray-50">
-                                <path d="M-300 0h201v201h-201Z M300 200h201v201h-201Z" strokeWidth={0} />
-                            </svg>
-                            <rect width="100%" height="100%" strokeWidth={0} fill="url(#e9033f3e-f665-41a6-84ef-756f6778e6fe)" />
-                        </svg>
-                    </div>
-                    <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                        <h2 className="text-center text-lg font-semibold leading-8 text-white">
-                            Trusted by the world’s most innovative teams
-                        </h2>
-                        <div className="mx-auto mt-10 grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
-                            <img
-                                className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-                                src="https://tailwindui.com/img/logos/158x48/transistor-logo-gray-900.svg"
-                                alt="Transistor"
-                                width={158}
-                                height={48}
-                            />
-                            <img
-                                className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-                                src="https://tailwindui.com/img/logos/158x48/reform-logo-gray-900.svg"
-                                alt="Reform"
-                                width={158}
-                                height={48}
-                            />
-                            <img
-                                className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-                                src="https://tailwindui.com/img/logos/158x48/tuple-logo-gray-900.svg"
-                                alt="Tuple"
-                                width={158}
-                                height={48}
-                            />
-                            <img
-                                className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1"
-                                src="https://tailwindui.com/img/logos/158x48/savvycal-logo-gray-900.svg"
-                                alt="SavvyCal"
-                                width={158}
-                                height={48}
-                            />
-                            <img
-                                className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1"
-                                src="https://tailwindui.com/img/logos/158x48/statamic-logo-gray-900.svg"
-                                alt="Statamic"
-                                width={158}
-                                height={48}
-                            />
-                        </div>
-                    </div>
-                </div>
-
                 {/* Team section */}
                 <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-48 lg:px-8">
                     <div className="mx-auto max-w-2xl lg:mx-0">
                         <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Our team</h2>
                         <p className="mt-6 text-lg leading-8 text-gray-300">
-                            Sit facilis neque ab nulla vel. Cum eos in laudantium. Temporibus eos totam in dolorum. Nemo vel facere
-                            repellendus ut eos dolores similique.
+                            Meet our team! We're a dedicated and diverse group of professionals with a passion for excellence.
+                            Our skills and expertise are matched only by our commitment to working together to achieve our goals.
+                            We believe that collaboration and communication are the keys to success,
+                            and we're proud to be part of a team that's making a difference in the world.
                         </p>
                     </div>
                     <ul
