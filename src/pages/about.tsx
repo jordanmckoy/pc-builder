@@ -30,16 +30,20 @@ const values = [
 
 const team = [
     {
+        name: 'Kadeem Green',
+        role: 'Co-Founder & CEO',
+        imageUrl: '/assets/stock/kadeem-green.jpg',
+    },
+    {
         name: 'Jordan McKoy',
         role: 'Co-Founder & CTO',
         imageUrl: '/assets/stock/jordan-mckoy.jpg',
     },
     {
-        name: 'Kadeem Green',
-        role: 'Co-Founder & CEO',
-        imageUrl: '/assets/stock/kadeem-green.jpg',
+        name: 'Abigail Hutchinson',
+        role: 'Co-Founder & CFO',
+        imageUrl: '/assets/stock/abigail-hutchinson.jpg',
     }
-
 ]
 
 const footerNavigation = {
